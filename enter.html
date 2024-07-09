@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GREEN GADGET MARKET PLACE (e-waste Management)</h1>
+    </header>
+    <h1>ALL PRODUCTS</h1>
+    <form id="productForm">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
+
+        <label for="productImage">Product Image:</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" required>
+
+        <label for="productDescription">Product Description:</label>
+        <textarea id="productDescription" name="productDescription" required></textarea>
+
+        <label for="productCondition">Condition:</label>
+        <select id="productCondition" name="productCondition" required>
+            <option value="Working">Working</option>
+            <option value="Not Working">Not Working</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('productForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const productName = document.getElementById('productName').value;
+            const productImage = document.getElementById('productImage').files[0];
+            const productDescription = document.getElementById('productDescription').value;
+            const productCondition = document.getElementById('productCondition').value;
+
+            if (productImage) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    const productDetails = {
+                        id: Date.now(),
+                        name: productName,
+                        image: reader.result,
+                        description: productDescription,
+                        condition: productCondition
+                    };
+
+                    let products = JSON.parse(localStorage.getItem('products')) || [];
+                    products.push(productDetails);
+                    localStorage.setItem('products', JSON.stringify(products));
+                    window.location.href = 'items.html';
+                };
+                reader.readAsDataURL(productImage);
+            }
+        });
+    </script>
+</body>
+</html>
